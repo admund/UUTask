@@ -1,4 +1,4 @@
-package me.admund.uutask.main
+package me.admund.uutask.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import me.admund.uutask.databinding.LayoutImageBinding
-import me.admund.uutask.model.ImageModel
+import me.admund.uutask.domain.Image
 
-class ImagesAdapter : ListAdapter<ImageModel, ImageViewHolder>(DiffCallback()) {
+class ImagesAdapter : ListAdapter<Image, ImageViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -28,11 +28,11 @@ class ImagesAdapter : ListAdapter<ImageModel, ImageViewHolder>(DiffCallback()) {
 
 class ImageViewHolder(val binding: LayoutImageBinding) : RecyclerView.ViewHolder(binding.root)
 
-private class DiffCallback : DiffUtil.ItemCallback<ImageModel>() {
+private class DiffCallback : DiffUtil.ItemCallback<Image>() {
 
-    override fun areItemsTheSame(oldItem: ImageModel, newItem: ImageModel) =
+    override fun areItemsTheSame(oldItem: Image, newItem: Image) =
         oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: ImageModel, newItem: ImageModel) =
+    override fun areContentsTheSame(oldItem: Image, newItem: Image) =
         oldItem == newItem
 }

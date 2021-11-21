@@ -1,4 +1,4 @@
-package me.admund.uutask.retorofit
+package me.admund.uutask.data
 
 data class ImageEntity(
     val id: String,

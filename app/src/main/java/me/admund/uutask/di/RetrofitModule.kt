@@ -3,7 +3,7 @@ package me.admund.uutask.di
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import me.admund.uutask.retorofit.ImagesService
+import me.admund.uutask.data.ImagesApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +16,7 @@ class RetrofitModule {
     }
 
     @Provides
-    fun provideImagesModule(): ImagesService {
+    fun provideImagesModule(): ImagesApi {
         val okHttp = OkHttpClient.Builder().build()
         val gsonConverter = GsonConverterFactory.create(GsonBuilder().create())
         val retrofit = Retrofit.Builder()
@@ -25,6 +25,6 @@ class RetrofitModule {
             .client(okHttp)
             .build()
 
-        return retrofit.create(ImagesService::class.java)
+        return retrofit.create(ImagesApi::class.java)
     }
 }

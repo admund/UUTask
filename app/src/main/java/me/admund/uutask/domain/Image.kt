@@ -1,6 +1,6 @@
-package me.admund.uutask.model
+package me.admund.uutask.domain
 
-data class ImageModel(
+data class Image(
     val id: String,
     val url: String,
     val likes: Long

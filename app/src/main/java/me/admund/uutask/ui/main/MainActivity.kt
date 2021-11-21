@@ -1,26 +1,30 @@
-package me.admund.uutask
+package me.admund.uutask.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.android.AndroidInjection
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.admund.uutask.databinding.ActivityMainBinding
 import me.admund.uutask.di.ViewModelFactory
-import me.admund.uutask.main.ImagesAdapter
-import me.admund.uutask.main.MainViewModel
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val COLUMNS_NUMBER = 4
+        const val COLUMNS_NUMBER = 3
     }
 
     @Inject
     lateinit var factory: ViewModelFactory
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
+
     private val imagesAdapter = ImagesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
-        ActivityMainBinding.inflate(layoutInflater).apply {
+        binding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
 
             imagesRecyclerView.apply {
@@ -37,13 +41,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.images.observe(this) {
+        viewModel.images.onEach {
             imagesAdapter.submitList(it)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchImages()
+            binding.loadingProgressBar.isVisible = it.isEmpty()
+        }.launchIn(lifecycleScope)
     }
 }
